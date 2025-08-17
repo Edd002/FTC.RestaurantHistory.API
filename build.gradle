@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.fiap.tech.challenge'
+version = '0.0.1-SNAPSHOT'
+description = 'FTC.RestaurantHistory.API'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.postgresql:postgresql:42.7.2'
+    implementation 'commons-codec:commons-codec:1.18.0'
+    implementation 'commons-io:commons-io:2.18.0'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'com.google.code.gson:gson:2.13.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.30'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+    implementation 'org.springframework.security:spring-security-web:6.4.4'
+    implementation 'org.modelmapper:modelmapper:3.2.2'
+    implementation 'org.json:json:20250107'
+    implementation 'io.jsonwebtoken:jjwt:0.12.6'
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+    implementation 'org.apache.maven.plugins:maven-surefire-plugin:3.5.3'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.platform:junit-platform-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
