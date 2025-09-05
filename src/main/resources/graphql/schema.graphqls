@@ -1,0 +1,111 @@
+scalar BigDecimal
+scalar DateTime
+
+enum OrderStatus {
+    REQUESTED
+    CONFIRMED
+    WAITING_FOR_PICKUP
+    ON_DELIVERY_ROUTE
+    DELIVERED
+}
+
+enum ReservationStatus {
+    REQUESTED
+    ACCEPTED
+    REJECTED
+}
+
+enum ReservationBookingTime {
+    BREAKFAST
+    LUNCH
+    DINNER
+}
+
+enum OrderType {
+    DELIVERY
+    PICKUP
+}
+
+type MenuItem {
+    name: String!
+    description: String!
+    price: BigDecimal!
+}
+
+type Order {
+    status: OrderStatus!
+    type: OrderType!
+    orderItems: [MenuItem!]!
+    createdDate: DateTime!
+    deliveredDate: DateTime
+    restaurantName: String!
+    userName: String!
+}
+
+type Reservation {
+    bookingStatus: ReservationStatus!
+    bookingTime: ReservationBookingTime!
+    bookingDate: DateTime!
+    bookingQuantity: Int!
+    restaurantName: String!
+    userName: String!
+}
+
+""" Relay-style pagination info """
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+}
+
+""" Relay-style Order pagination """
+type OrderEdge {
+    cursor: String!
+    node: Order!
+}
+
+type OrderConnection {
+    edges: [OrderEdge!]!
+    pageInfo: PageInfo!
+}
+
+""" Relay-style Reservation pagination """
+type ReservationEdge {
+    cursor: String!
+    node: Reservation!
+}
+
+type ReservationConnection {
+    edges: [ReservationEdge!]!
+    pageInfo: PageInfo!
+}
+
+input OrderFilterInput {
+    status: OrderStatus
+    type: OrderType
+    restaurantName: String
+    userName: String
+    fromDate: DateTime
+    toDate: DateTime
+}
+
+input ReservationFilterInput {
+    bookingStatus: ReservationStatus
+    bookingTime: ReservationBookingTime
+    restaurantName: String
+    userName: String
+    fromDate: DateTime
+    toDate: DateTime
+}
+
+""" Relay-style pagination input """
+input PageFilterInput {
+    first: Int
+    after: String
+}
+
+extend type Query {
+    getOrders(filter: OrderFilterInput, page: PageFilterInput): OrderConnection!
+    getReservations(filter: ReservationFilterInput, page: PageFilterInput): ReservationConnection!
+}
