@@ -1,15 +1,21 @@
 package com.fiap.tech.challenge.config;
 
-import com.fiap.tech.challenge.domain.menuitemorder.dto.MenuItemOrderResponseDTO;
-import com.fiap.tech.challenge.domain.menuitemorder.entity.MenuItemOrder;
+import com.fiap.tech.challenge.domain.menuitem.dto.MenuItemResponseDTO;
+import com.fiap.tech.challenge.domain.menuitem.entity.MenuItem;
 import com.fiap.tech.challenge.domain.order.dto.OrderResponseDTO;
 import com.fiap.tech.challenge.domain.order.entity.Order;
 import com.fiap.tech.challenge.domain.reservation.dto.ReservationResponseDTO;
 import com.fiap.tech.challenge.domain.reservation.entity.Reservation;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class MapperPresenterConfig {
@@ -30,15 +36,25 @@ public class MapperPresenterConfig {
 
     private void configOrderToOrderResponseDTOMapperPresenter(ModelMapper modelMapper) {
 
-        modelMapper.typeMap(Order.class, OrderResponseDTO.class)
-                .addMapping(Order::getOrderCreationDate, OrderResponseDTO::setCreatedDate)
-                .addMapping(Order::getOrderDeliveryDate, OrderResponseDTO::setDeliveredDate);
+        Converter<LocalDateTime, String> toStringConverter = ctx -> {
+            if (ctx.getSource() == null) return null;
+            OffsetDateTime offsetDateTime = ctx.getSource().atOffset(ZoneOffset.UTC);
+            return offsetDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        };
 
-        modelMapper.typeMap(MenuItemOrder.class, MenuItemOrderResponseDTO.class)
-                .addMapping(src -> src.getMenuItem().getName(), MenuItemOrderResponseDTO::setName)
-                .addMapping(src -> src.getMenuItem().getDescription(), MenuItemOrderResponseDTO::setDescription)
-                .addMapping(MenuItemOrder::getPriceAtOrder, MenuItemOrderResponseDTO::setPriceAtOrder)
-                .addMapping(MenuItemOrder::getQuantity, MenuItemOrderResponseDTO::setQuantity);
+        modelMapper.typeMap(Order.class, OrderResponseDTO.class)
+                .addMappings(mapper -> {
+                    mapper.using(toStringConverter)
+                            .map(Order::getOrderCreationDate, OrderResponseDTO::setCreatedDate);
+                    mapper.using(toStringConverter)
+                            .map(Order::getOrderDeliveryDate, OrderResponseDTO::setDeliveredDate);
+                });
+
+        modelMapper.typeMap(MenuItem.class, MenuItemResponseDTO.class)
+                .addMapping(MenuItem::getName, MenuItemResponseDTO::setName)
+                .addMapping(MenuItem::getDescription, MenuItemResponseDTO::setDescription)
+                .addMapping(MenuItem::getPrice, MenuItemResponseDTO::setPrice)
+                .addMapping(MenuItem::getQuantity, MenuItemResponseDTO::setQuantity);
     }
 
     private void configReservationToReservationResponseDTOMapperPresenter(ModelMapper modelMapper) {

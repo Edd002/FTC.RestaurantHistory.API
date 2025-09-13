@@ -1,6 +1,6 @@
 package com.fiap.tech.challenge.domain.order.entity;
 
-import com.fiap.tech.challenge.domain.menuitemorder.entity.MenuItemOrder;
+import com.fiap.tech.challenge.domain.menuitem.entity.MenuItem;
 import com.fiap.tech.challenge.domain.order.enumerated.OrderStatusEnum;
 import com.fiap.tech.challenge.domain.order.enumerated.OrderTypeEnum;
 import com.fiap.tech.challenge.global.audit.Audit;
@@ -44,5 +44,5 @@ public class Order extends Audit implements Serializable {
     private String userName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
-    private List<MenuItemOrder> orderItems;
+    private List<MenuItem> orderItems;
 }

@@ -1,16 +1,16 @@
 package com.fiap.tech.challenge.domain.order.specification;
 
-import com.fiap.tech.challenge.domain.order.dto.OrderFilterInput;
+import com.fiap.tech.challenge.domain.order.dto.OrderRequestDTO;
 import com.fiap.tech.challenge.domain.order.entity.Order;
 import com.fiap.tech.challenge.global.search.enumerated.SearchOperationEnum;
 import com.fiap.tech.challenge.global.search.specification.BasicSpecificationBuilder;
 import com.fiap.tech.challenge.global.search.specification.SearchCriteria;
 import com.fiap.tech.challenge.global.util.ValidationUtil;
 
-public class OrderSpecificationBuilder extends BasicSpecificationBuilder<Order, OrderSpecification, OrderFilterInput> {
+public class OrderSpecificationBuilder extends BasicSpecificationBuilder<Order, OrderSpecification, OrderRequestDTO> {
 
     @Override
-    protected void initParams(OrderFilterInput filter) {
+    protected void initParams(OrderRequestDTO filter) {
         if (filter == null) {
             return;
         }

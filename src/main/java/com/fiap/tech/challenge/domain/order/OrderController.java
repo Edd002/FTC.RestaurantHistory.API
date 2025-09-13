@@ -1,6 +1,6 @@
 package com.fiap.tech.challenge.domain.order;
 
-import com.fiap.tech.challenge.domain.order.dto.OrderFilterInput;
+import com.fiap.tech.challenge.domain.order.dto.OrderRequestDTO;
 import com.fiap.tech.challenge.domain.order.dto.OrderResponseDTO;
 import com.fiap.tech.challenge.global.search.filter.Connection;
 import com.fiap.tech.challenge.global.search.filter.PageFilterInput;
@@ -19,10 +19,10 @@ public class OrderController {
 
     @QueryMapping
     public Connection<OrderResponseDTO> getOrders(
-            @Argument OrderFilterInput filter,
-            @Argument PageFilterInput pageFilter
+            @Argument OrderRequestDTO filter,
+            @Argument PageFilterInput page
     ) {
-        return service.getOrders(filter, pageFilter);
+        return service.getOrders(filter, page);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.fiap.tech.challenge.domain.menuitem.entity;
 
+import com.fiap.tech.challenge.domain.order.entity.Order;
 import com.fiap.tech.challenge.global.audit.Audit;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,4 +30,11 @@ public class MenuItem extends Audit implements Serializable {
 
     @Column(name = "price", precision = 7, scale = 2, nullable = false)
     private BigDecimal price;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "fk_order", nullable = false)
+    private Order order;
 }

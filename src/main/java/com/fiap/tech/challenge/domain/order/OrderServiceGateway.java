@@ -1,6 +1,6 @@
 package com.fiap.tech.challenge.domain.order;
 
-import com.fiap.tech.challenge.domain.order.dto.OrderFilterInput;
+import com.fiap.tech.challenge.domain.order.dto.OrderRequestDTO;
 import com.fiap.tech.challenge.domain.order.dto.OrderResponseDTO;
 import com.fiap.tech.challenge.domain.order.entity.Order;
 import com.fiap.tech.challenge.domain.order.specification.OrderSpecificationBuilder;
@@ -31,7 +31,7 @@ public class OrderServiceGateway {
         this.connectionBuilder = connectionBuilder;
     }
 
-    public Connection<OrderResponseDTO> getOrders(OrderFilterInput request, PageFilterInput pageFilter) {
+    public Connection<OrderResponseDTO> getOrders(OrderRequestDTO request, PageFilterInput pageFilter) {
         Pageable pageable = pageableBuilder.build(pageFilter);
         Page<Order> page = orderRepository.findAll(
                 new OrderSpecificationBuilder().build(request).orElse(null),

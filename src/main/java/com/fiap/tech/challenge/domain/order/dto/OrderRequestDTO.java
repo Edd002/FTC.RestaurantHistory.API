@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderFilterInput {
+@SchemaMapping("OrderFilterInput")
+public class OrderRequestDTO {
     private OrderStatusEnum status;
     private OrderTypeEnum type;
     private String restaurantName;

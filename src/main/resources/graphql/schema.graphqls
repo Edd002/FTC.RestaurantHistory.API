@@ -30,6 +30,7 @@ type MenuItem {
     name: String!
     description: String!
     price: BigDecimal!
+    quantity: Int!
 }
 
 type Order {
@@ -107,5 +108,4 @@ input PageFilterInput {
 
 extend type Query {
     getOrders(filter: OrderFilterInput, page: PageFilterInput): OrderConnection!
-    getReservations(filter: ReservationFilterInput, page: PageFilterInput): ReservationConnection!
 }
