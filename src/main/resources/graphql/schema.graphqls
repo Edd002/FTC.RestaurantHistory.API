@@ -108,4 +108,5 @@ input PageFilterInput {
 
 extend type Query {
     getOrders(filter: OrderFilterInput, page: PageFilterInput): OrderConnection!
+    getReservations(filter: ReservationFilterInput, page: PageFilterInput): ReservationConnection!
 }

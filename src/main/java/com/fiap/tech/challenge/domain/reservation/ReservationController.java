@@ -2,24 +2,24 @@ package com.fiap.tech.challenge.domain.reservation;
 
 import com.fiap.tech.challenge.domain.reservation.dto.ReservationRequestDTO;
 import com.fiap.tech.challenge.domain.reservation.dto.ReservationResponseDTO;
+import com.fiap.tech.challenge.global.search.filter.Connection;
+import com.fiap.tech.challenge.global.search.filter.PageFilterInput;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 
-import java.util.List;
 
-
-//TODO Finalizar estrutura de reservation
-//@Controller
+@Controller
 public class ReservationController {
 
-//    private final OrderReservationService service;
+    private final ReservationServiceGateway service;
 
-//    public ReservationController(OrderReservationService service) {
-//        this.service = service;
-//    }
+    public ReservationController(ReservationServiceGateway service) {
+        this.service = service;
+    }
 
-//    @QueryMapping
-    public List<ReservationResponseDTO> getReservations(@Argument ReservationRequestDTO filter) {
-//        return service.getReservations(filter);
-        return null;
+    @QueryMapping
+    public Connection<ReservationResponseDTO> getReservations(@Argument ReservationRequestDTO filter, @Argument PageFilterInput page) {
+        return service.getReservations(filter, page);
     }
 }

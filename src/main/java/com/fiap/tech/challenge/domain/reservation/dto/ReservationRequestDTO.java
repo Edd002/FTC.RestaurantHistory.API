@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,6 +20,6 @@ public class ReservationRequestDTO {
     private ReservationBookingTimeEnum bookingTime;
     private String restaurantName;
     private String userName;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
+    private LocalDate fromDate;
+    private LocalDate toDate;
 }

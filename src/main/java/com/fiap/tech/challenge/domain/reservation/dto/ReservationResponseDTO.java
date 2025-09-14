@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ReservationResponseDTO {
     private ReservationStatusEnum bookingStatus;
     private ReservationBookingTimeEnum bookingTime;
-    private LocalDateTime bookingDate;
+    private LocalDate bookingDate;
     private int bookingQuantity;
     private String restaurantName;
     private String userName;
