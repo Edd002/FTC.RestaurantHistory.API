@@ -19,9 +19,14 @@ spring:
     active: local
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5453/ftc_restaurant_history_database
+    url: jdbc:postgresql://localhost:5454/ftc_restaurant_history_database
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic:
+      name:
+        producer: dto
   jackson:
     default-property-inclusion: non_null
     deserialization:
