@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @SchemaMapping("Order")
 public class OrderResponseDTO {
+    private String hashId;
     private OrderStatusEnum status;
     private OrderTypeEnum type;
     private List<MenuItemResponseDTO> orderItems;
