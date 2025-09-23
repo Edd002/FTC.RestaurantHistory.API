@@ -4,7 +4,7 @@ server:
     enabled: true
   http2:
     enabled: true
-  port: 8087
+  port: 8085
   servlet:
     context-path: /restaurant-history
     encoding:
