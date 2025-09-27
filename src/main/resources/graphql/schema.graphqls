@@ -1,5 +1,6 @@
 scalar BigDecimal
 scalar DateTime
+scalar LocalDate
 
 enum OrderStatus {
     REQUESTED
@@ -46,7 +47,7 @@ type Order {
 type Reservation {
     bookingStatus: ReservationStatus!
     bookingTime: ReservationBookingTime!
-    bookingDate: DateTime!
+    bookingDate: LocalDate!
     bookingQuantity: Int!
     restaurantName: String!
     userName: String!
