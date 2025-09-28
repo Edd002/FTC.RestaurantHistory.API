@@ -3,29 +3,30 @@ services:
   # FTC RestaurantHistory API
   app:
     env_file:
-      .env
+      - .env
     build:
       context: .
       dockerfile: Dockerfile
     container_name: ftc_restaurant_history_api
     ports:
-      - "8085:8085"
+      - "8086:8086"
+      - "5006:5006"
     depends_on:
       - ftc_restaurant_history_database
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ftc_restaurant_history_database:5433/ftc_restaurant_history_database
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ftc_restaurant_history_database:5432/ftc_restaurant_history_database
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
     networks:
       - ftc_restaurant_history_database_net
     profiles: ["docker"]
 
-
   # DATABASE
   ftc_restaurant_history_database:
     env_file:
-      .env
+      - .env
     container_name: ftc_restaurant_history_database
     image: postgres:17.4
     ports:
@@ -37,12 +38,10 @@ services:
     networks:
       - ftc_restaurant_history_database_net
     volumes:
-      - ftc_restaurant_history_database:/var/lib/postgresql
       - ftc_restaurant_history_database_data:/var/lib/postgresql/data
 
 networks:
   ftc_restaurant_history_database_net:
 
 volumes:
-  ftc_restaurant_history_database:
   ftc_restaurant_history_database_data:

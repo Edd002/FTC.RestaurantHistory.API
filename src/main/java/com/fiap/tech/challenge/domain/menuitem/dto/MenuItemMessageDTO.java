@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class MenuItemMessageDTO {
+    private String hashId;
     private String name;
     private String description;
     private BigDecimal price;

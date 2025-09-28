@@ -8,12 +8,14 @@ enum OrderStatus {
     WAITING_FOR_PICKUP
     ON_DELIVERY_ROUTE
     DELIVERED
+    CANCELED
 }
 
 enum ReservationStatus {
     REQUESTED
     ACCEPTED
     REJECTED
+    CANCELED
 }
 
 enum ReservationBookingTime {
@@ -31,7 +33,7 @@ type MenuItem {
     name: String!
     description: String!
     price: BigDecimal!
-    quantity: Int!
+    quantity: Int
 }
 
 type Order {

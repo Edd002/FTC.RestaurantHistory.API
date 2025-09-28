@@ -4,7 +4,7 @@ server:
     enabled: true
   http2:
     enabled: true
-  port: 8085
+  port: 8086
   servlet:
     context-path: /restaurant-history
     encoding:
@@ -17,14 +17,17 @@ spring:
     name: FTC.RestaurantHistory.API
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5453/ftc_restaurant_history_database
+    url: jdbc:postgresql://localhost:5454/ftc_restaurant_history_database
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   kafka:
-    bootstrap-servers: localhost:9093
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: restaurant-history-group
     topic:
       name:
-        producer: dto
+        order-topic: orders
+        reservation-topic: reservations
   jackson:
     default-property-inclusion: non_null
     deserialization:

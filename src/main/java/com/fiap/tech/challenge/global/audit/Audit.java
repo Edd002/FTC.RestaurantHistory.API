@@ -16,8 +16,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-import static com.fiap.tech.challenge.global.util.HashUtil.generateHash;
-
 @Getter(value = AccessLevel.PUBLIC)
 @Setter(value = AccessLevel.PROTECTED)
 @MappedSuperclass
@@ -29,7 +27,7 @@ public abstract class Audit implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "hash_id", nullable = false, updatable = false)
-    private String hashId = generateHash();
+    private String hashId;
 
     @CreatedDate
     @Column(name = "created_in", nullable = false, updatable = false)
