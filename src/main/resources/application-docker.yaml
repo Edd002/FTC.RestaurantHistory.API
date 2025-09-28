@@ -17,7 +17,7 @@ spring:
     name: FTC.RestaurantHistory.API
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5454/ftc_restaurant_history_database
+    url: jdbc:postgresql://localhost:5432/ftc_restaurant_history_database
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   kafka:
