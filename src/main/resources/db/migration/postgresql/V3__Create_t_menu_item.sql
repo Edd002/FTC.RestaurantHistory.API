@@ -14,9 +14,9 @@ CREATE TABLE public.t_menu_item
     primary key (id)
 );
 
-CREATE SEQUENCE public.sq_menu_item START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE IF NOT EXISTS public.sq_menu_item START WITH 1 INCREMENT BY 1;
 
-CREATE UNIQUE INDEX T_MENU_ITEM__HASH_ID_UK ON public.t_menu_item (hash_id);
+CREATE INDEX IF NOT EXISTS T_MENU_ITEM__HASH_ID_UK ON public.t_menu_item (hash_id);
 
 ALTER TABLE public.t_menu_item
     ADD CONSTRAINT FK_MENU_ITEM_ORDER

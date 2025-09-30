@@ -1,6 +1,9 @@
 package com.fiap.tech.challenge.config;
 
-import com.fiap.tech.challenge.domain.order.dto.OrderResponseDTO;
+import com.fiap.tech.challenge.domain.order.dto.OrderMessageDTO;
+import com.fiap.tech.challenge.domain.reservation.dto.ReservationMessageDTO;
+import com.fiap.tech.challenge.messaging.consumer.deserializer.OrderMessageDeserializer;
+import com.fiap.tech.challenge.messaging.consumer.deserializer.ReservationMessageDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +14,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,27 +25,43 @@ public class KafkaConsumerConfig {
     private String bootStrapAddress;
 
     @Bean
-    public ConsumerFactory<String, OrderResponseDTO> orderConsumerFactory() {
+    public ConsumerFactory<String, OrderMessageDTO> orderConsumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapAddress);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, OrderMessageDeserializer.class);
 
         configProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "group_order");
-        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
-        return new DefaultKafkaConsumerFactory<>(
-                configProps,
-                new StringDeserializer(),
-                new JsonDeserializer<>(OrderResponseDTO.class)
-        );
+        return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, OrderResponseDTO> orderKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, OrderResponseDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, OrderMessageDTO> orderKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, OrderMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.orderConsumerFactory());
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, ReservationMessageDTO> reservationConsumerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapAddress);
+        configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ReservationMessageDeserializer.class);
+
+        configProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "group_reservation");
+
+        return new DefaultKafkaConsumerFactory<>(configProps);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ReservationMessageDTO> reservationKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ReservationMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(this.reservationConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;
     }

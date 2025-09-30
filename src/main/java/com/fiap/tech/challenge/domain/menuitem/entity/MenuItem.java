@@ -11,10 +11,24 @@ import java.math.BigDecimal;
 @Getter(value = AccessLevel.PUBLIC)
 @Setter(value = AccessLevel.PROTECTED)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "t_menu_item")
 public class MenuItem extends Audit implements Serializable {
+
+    public MenuItem(String hashId, String name, String description, BigDecimal price, Order order) {
+        this.setHashId(hashId);
+        this.setName(name);
+        this.setDescription(description);
+        this.setPrice(price);
+        this.setOrder(order);
+    }
+
+    public MenuItem(String hashId, String name, String description, BigDecimal price) {
+        this.setHashId(hashId);
+        this.setName(name);
+        this.setDescription(description);
+        this.setPrice(price);
+    }
 
     @Id
     @GeneratedValue(generator = "SQ_MENU_ITEM")

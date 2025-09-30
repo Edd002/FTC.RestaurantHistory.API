@@ -12,10 +12,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Configuration
 public class MapperPresenterConfig {
@@ -58,10 +57,16 @@ public class MapperPresenterConfig {
     }
 
     private void configReservationToReservationResponseDTOMapperPresenter(ModelMapper modelMapper) {
+        Converter<java.sql.Date, LocalDate> sqlDateToLocalDate = ctx -> {
+            if (ctx.getSource() == null) return null;
+            return ctx.getSource().toLocalDate();
+        };
+
         modelMapper.typeMap(Reservation.class, ReservationResponseDTO.class)
                 .addMapping(Reservation::getBookingStatus, ReservationResponseDTO::setBookingStatus)
                 .addMapping(Reservation::getBookingTime, ReservationResponseDTO::setBookingTime)
-                .addMapping(Reservation::getBookingDate, ReservationResponseDTO::setBookingDate)
+                .addMappings(mapper -> mapper.using(sqlDateToLocalDate)
+                        .map(Reservation::getBookingDate, ReservationResponseDTO::setBookingDate))
                 .addMapping(Reservation::getBookingQuantity, ReservationResponseDTO::setBookingQuantity)
                 .addMapping(Reservation::getRestaurantName, ReservationResponseDTO::setRestaurantName)
                 .addMapping(Reservation::getUserName, ReservationResponseDTO::setUserName);

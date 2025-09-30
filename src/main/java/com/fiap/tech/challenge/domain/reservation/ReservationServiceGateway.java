@@ -1,9 +1,12 @@
 package com.fiap.tech.challenge.domain.reservation;
 
+import com.fiap.tech.challenge.domain.reservation.dto.ReservationMessageDTO;
 import com.fiap.tech.challenge.domain.reservation.dto.ReservationRequestDTO;
 import com.fiap.tech.challenge.domain.reservation.dto.ReservationResponseDTO;
 import com.fiap.tech.challenge.domain.reservation.entity.Reservation;
 import com.fiap.tech.challenge.domain.reservation.specification.ReservationSpecificationBuilder;
+import com.fiap.tech.challenge.domain.reservation.usecase.ReservationCreateUseCase;
+import com.fiap.tech.challenge.domain.reservation.usecase.ReservationUpdateUseCase;
 import com.fiap.tech.challenge.global.search.filter.Connection;
 import com.fiap.tech.challenge.global.search.filter.PageFilterInput;
 import com.fiap.tech.challenge.global.search.pagination.GraphQLConnectionBuilder;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReservationServiceGateway {
@@ -43,5 +47,24 @@ public class ReservationServiceGateway {
 
         return connectionBuilder.build(page, pageSize, offset,
                 entity -> modelMapperPresenter.map(entity, ReservationResponseDTO.class));
+    }
+
+    @Transactional
+    public void receiveReservation(ReservationMessageDTO reservationDTO) {
+        reservationRepository.findByHashId(reservationDTO.getHashId())
+                .ifPresentOrElse(
+                        existingReservation -> updateReservation(existingReservation, reservationDTO),
+                        () -> createReservation(reservationDTO)
+                );
+    }
+
+    private void createReservation(ReservationMessageDTO reservationDTO) {
+        Reservation reservation = new ReservationCreateUseCase(reservationDTO).getBuiltedReservation();
+        reservationRepository.saveAndFlush(reservation);
+    }
+
+    private void updateReservation(Reservation existingReservation, ReservationMessageDTO reservationDTO) {
+        Reservation updatedReservation = new ReservationUpdateUseCase(existingReservation, reservationDTO).getRebuiltedReservation();
+        reservationRepository.saveAndFlush(updatedReservation);
     }
 }
