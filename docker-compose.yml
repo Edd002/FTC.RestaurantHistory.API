@@ -17,9 +17,10 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ftc_restaurant_history_database:5432/ftc_restaurant_history_database
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=ftc_restaurant_manager_broker:29092
     networks:
       - ftc_restaurant_history_database_net
-      - restaurant_net
+      - ftc_restaurant_net
     profiles: ["docker"]
 
 
@@ -43,7 +44,9 @@ services:
 
 networks:
   ftc_restaurant_history_database_net:
-  fts_restaurant_net:
+  ftc_restaurant_net:
+    external: true
+    name: ftc_restaurant_net
 
 volumes:
   ftc_restaurant_history_database:
