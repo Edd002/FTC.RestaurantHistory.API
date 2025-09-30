@@ -21,6 +21,7 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
     networks:
       - ftc_restaurant_history_database_net
+      - ftc_restaurant_net
     profiles: ["docker"]
 
   # DATABASE
@@ -37,10 +38,13 @@ services:
       POSTGRES_DB: ftc_restaurant_history_database
     networks:
       - ftc_restaurant_history_database_net
+      - ftc_restaurant_net
     volumes:
       - ftc_restaurant_history_database_data:/var/lib/postgresql/data
 
 networks:
+  ftc_restaurant_net:
+    external: true
   ftc_restaurant_history_database_net:
 
 volumes:

@@ -24,9 +24,12 @@ spring:
     password: ${DB_PASSWORD}
   kafka:
     bootstrap-servers: localhost:9092
+    consumer:
+      group-id: restaurant-history-group
     topic:
       name:
-        producer: dto
+        order-topic: orders
+        reservation-topic: reservations
   jackson:
     default-property-inclusion: non_null
     deserialization:

@@ -21,7 +21,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: broker:29092
     consumer:
       group-id: restaurant-history-group
     topic:
