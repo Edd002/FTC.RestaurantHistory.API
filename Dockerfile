@@ -6,5 +6,5 @@ RUN gradle build -x test
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
-EXPOSE 8085
+EXPOSE 8086
 ENTRYPOINT ["java", "-jar", "app.jar"]
