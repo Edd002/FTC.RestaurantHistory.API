@@ -1,6 +1,6 @@
 # FTC.RestaurantHistory.API
 
-Este serviço é responsável por consumir eventos de pedidos (`Order`) e reservas (`Reservation`) de um tópico Apache Kafka e persistir um histórico de pedidos e reservas para os restaurantes.
+Este serviço é responsável por consumir eventos de pedidos (`Order`) e reservas (`Reservation`) de um tópico Apache Kafka e persistir um histórico de pedidos e reservas para os restaurantes. Além de possuir consultas à base de históricos.
 
 ## Diagrama de Arquitetura
 
@@ -8,55 +8,38 @@ O diagrama abaixo ilustra a arquitetura e o fluxo de dados do serviço:
 
 ![arch-diagram.png](arch-diagram.png)
 
-## Como subir e limpar a aplicação
+## Arquitetura do Sistema
 
-### Linux / WSL
+Este sistema foi desenvolvido utilizando **Java 21**, **Spring Boot 3.4.4** e **PostgreSQL 17.4**.
 
-1. **Instalar o `make` (caso não exista):**
+### Tecnologias Utilizadas
+- **Java 21** e **Spring Boot 3.4.4** para a criação da aplicação web
+- **Docker** e **Docker Compose** para execução e gerenciamento de ambientes
+- **GraphQL** protocolo para execução de consultas à base de histórico
+- **PostgreSQL** como banco de dados, garantindo confiabilidade e desempenho
+- **Flyway** para gerenciamento de migrações do banco de dados
+- **H2 Database Engine** como banco de dados para ambiente de testes automatizados
 
-```bash
-sudo apt update
-sudo apt install make -y
-```
+### Estrutura Arquitetural
+A arquitetura do sistema segue uma abordagem baseada em **Domínios**, promovendo a separação de responsabilidades e facilitando a escalabilidade. Os principais componentes dentro de cada domínio incluem:
 
-2. Subir a aplicação com Makefile:
-```bash
-make up
-```
+- **Config**: Configuração de dependências necessárias para o levantamento e funcionamento do container de aplicação.
+- **Controller**: Gerencia requisições HTTP e as direciona para os serviços apropriados.
+- **ServiceGateway**: Coordena acessos sistêmicos como arquivos de configuração, repositórios e orquestra use cases.
+- **MapperPresenter**: Prepara os dados para retorno ao cliente.
+- **Repository**: Interface para acesso e manipulação de dados armazenados no banco de dados.
+- **Entity**: Representação das tabelas do banco de dados como classes Java (ORM) e core de domínio.
+- **UseCases**: Implementações de regras de negócio para cada caso de uso de cada domínio.
 
-3. Limpar a aplicação
-```bash
-make clean
-```
+### Benefícios da Arquitetura
+Essa estrutura modular possibilita:
+- Desenvolvimento mais organizado
+- Manutenção facilitada
+- Maior flexibilidade para futuras expansões
 
-### Windows / PowerShell
+## Como rodar? 🚀
+Para executar o projeto utilizando Docker Compose:
+1. Crie (ou altere) um arquivo **.env** na raiz do projeto com suas configurações (PS.: Utilize como base o arquivo [.env.example](.env.example))
+2. Rode `docker compose --profile docker up --build` na raiz do projeto
+5. Acesse a documentação Postman: [link](https://documenter.getpostman.com/view/43787842/2sB2qcBfps)
 
-1. Subir a aplicação:
-```bash
-.\make.ps1 -Action up
-```
-
-2. Limpar a aplicação
-```bash
-.\make.ps1 -Action clean
-```
-
-### Manualmente
-Caso opte por subir a aplicação manualmente, sem scripts.
-
-1. Criar a rede manualmente (se necessário):
-
-```bash
-docker network create ftc_restaurant_net
-```
-
-2. Subir o container manualmente:
-```bash
-docker compose --profile docker up --build
-```
-
-3. Limpar a aplicação e remover a rede
-```bash
-docker compose down -v
-docker network rm ftc_restaurant_net
-```

@@ -45,6 +45,7 @@ services:
 networks:
   ftc_restaurant_net:
     external: true
+    name: ftc_restaurant_net
   ftc_restaurant_history_database_net:
 
 volumes:
