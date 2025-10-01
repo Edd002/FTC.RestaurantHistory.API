@@ -39,7 +39,7 @@ Essa estrutura modular possibilita:
 
 ## Como rodar? 🚀
 Para executar o projeto utilizando Docker Compose:
-1. Crie (ou altere) um arquivo **.env** na raiz do projeto com suas configurações (PS.: Utilize como base o arquivo [.env.example](.env.example))
-2. Rode `docker compose --profile docker up --build` na raiz do projeto
-5. Acesse a documentação Postman: [link](https://documenter.getpostman.com/view/43787842/2sB2qcBfps)
+1. Rode `docker compose --profile docker up --build` na raiz do projeto
+2. Acesse o playground: [link](http://localhost:8086/restaurant-history/playground.html)
+3. Acesse a documentação Postman: [link](https://documenter.getpostman.com/view/43787842/2sB2qcBfps)
 
