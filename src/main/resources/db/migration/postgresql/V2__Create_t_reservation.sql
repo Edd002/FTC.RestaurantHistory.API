@@ -18,4 +18,3 @@ CREATE TABLE public.t_reservation
 CREATE SEQUENCE public.sq_reservation START WITH 1 INCREMENT BY 1;
 
 CREATE UNIQUE INDEX T_RESERVATION__HASH_ID_UK ON public.t_reservation (hash_id);
-CREATE UNIQUE INDEX T_RESERVATION__B_TIM_AND_B_DAT_UK ON public.t_reservation (booking_time, booking_date);
