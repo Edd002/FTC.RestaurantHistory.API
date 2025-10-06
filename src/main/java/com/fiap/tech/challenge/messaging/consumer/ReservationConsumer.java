@@ -5,9 +5,7 @@ import com.fiap.tech.challenge.domain.reservation.dto.ReservationMessageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 
@@ -22,12 +20,9 @@ public class ReservationConsumer {
     }
 
     @KafkaListener(topics = "${spring.kafka.topic.name.reservation-topic}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "reservationKafkaListenerContainerFactory")
-    @RetryableTopic(
-            backoff = @Backoff(value = 3000L),
-            autoCreateTopics = "false",
-            include = Exception.class)
     public void listenToReservationTopic(ConsumerRecord<String, ReservationMessageDTO> message, Acknowledgment ack) {
         try {
+            log.info("Ack mode: {}", ack.getClass().getSimpleName());
             ReservationMessageDTO reservation = message.value();
 
             service.receiveReservation(reservation);
